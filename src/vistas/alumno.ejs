@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="mx">
+<head>
+    <title>
+        Tutorial CSS de DWP
+    </title>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Aquí debería ir una etiqueta de apertura de comentario para el include, si es necesario. -->
+    <%- include('secciones/librerias.html') %>
+</head>
+<body>
+<!-- <%- include('secciones/header.html') %> -->
+
+<div id="principal">
+    <div id="contenido" style="overflow-x: hidden;"> <!-- Faltaba el símbolo de apertura en esta línea -->
+        <div class="row d-flex justify-content-end">
+            <div class="col col-auto mb-4">
+                <% if (usuario) { %>
+                    Usuario: <%= usuario %>
+                <% } %>
+            </div>
+            <div class="col col-auto mb-4">
+                <form name="formCerrarSesion" action="/sesion/cerrar" method="post">
+                    <input type="submit" value="Cerrar Sesión" class="btn btn-sm btn-dark">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-4 form__alumnos" style="width: 350px;">
+                <form action="/alumnos/agregar" method="post">
+                    <input type="text" name="tfNL" id="tfNL" placeholder="Número de lista" class="f">
+                    <input type="text" name="tfNombre" id="tfNombre" placeholder="Nombre" class="for">
+                    <input type="text" name="tfPaterno" id="tfPaterno" placeholder="Apellido Paterno">
+                    <input type="text" name="tfMaterno" id="tfMaterno" placeholder="Apellido Materno">
+                    <button type="submit" class="btn btn-primary mt-2">Agregar</button>
+                </form>
+            </div>            
+
+            <div class="col col-8">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>NL</th>
+                        <th>Nombre</th>
+                        <th>Paterno</th>
+                        <th>Materno</th>
+                        <th colspan="2">Opciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% for(var i=0; i<data.length; i++) { %>
+                    <tr>
+                        <td><%= data[i].NL %></td>
+                        <td><%= data[i].Nombre %></td>
+                        <td><%= data[i].Paterno %></td>
+                        <td><%= data[i].Materno %></td>
+                        <td width="50">
+                            <form action="/alumnos/editar" method="post">
+                                <input type="hidden" name="tfNL" value="<%= data[i].NL %>" />
+                                <button type="submit" class="btn btn-sm btn-warning">Editar</button>
+                            </form>
+                        </td>
+                        <td width="50">
+                            <a href="/alumnos/eliminar/<%= data[i].NL %>" class="btn btn-sm btn-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('secciones/footer.html') %> <!-- Aquí debería ir una etiqueta de cierre de comentario para el include, si es necesario. -->
+<%- include('secciones/scripts.html') %>
+</body>
+</html>
